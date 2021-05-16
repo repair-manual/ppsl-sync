@@ -1,0 +1,19 @@
+{
+  "name": "ppsl-sync",
+  "private": true,
+  "version": "1.0.0b",
+  "main": "src/index.js",
+  "repository": "https://github.com/repair-manual/ppsl-sync.git",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@actions/core": "^1.2.7",
+    "@actions/github": "^5.0.0",
+    "dotenv": "^9.0.2",
+    "js-yaml": "^4.1.0",
+    "mwn": "^0.10.4",
+    "simple-git": "^2.39.0"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
+}

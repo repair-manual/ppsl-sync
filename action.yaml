@@ -1,0 +1,21 @@
+name: 'PPSL-Sync'
+description: 'Synchronize PPSL-Data to MediaWiki.'
+inputs:
+  mediawiki-api-endpoint:
+    description: 'The url for the MediaWiki API endpoint.'
+    required: true
+    default: 'https://endpoint.wiki/api.php'
+  repo-local-path:
+    description: 'The repository local path.'
+    required: true
+    default: './ppsl-data'
+outputs:
+  time:
+    description: 'Finished time.'
+  unused-data:
+    description: 'Stringified JSON of unused data.'
+  uploaded-articles:
+    description: 'Stringified JSON of uploaded/edited article titles.'
+runs:
+  using: 'node12'
+  main: 'index.js'
