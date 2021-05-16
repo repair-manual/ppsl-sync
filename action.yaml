@@ -12,6 +12,10 @@ inputs:
 outputs:
   time:
     description: 'Finished time.'
+  unused-data:
+    description: 'Stringified JSON of unused data.'
+  uploaded-articles:
+    description: 'Stringified JSON of uploaded/edited article titles.'
 runs:
   using: 'node12'
   main: 'index.js'

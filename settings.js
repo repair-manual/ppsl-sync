@@ -9,16 +9,14 @@ const defaultSettings = {
   userAgent: 'PPSL-Sync-Bot/%s (https://github.com/repair-manual/ppsl-sync)',
   repoRemoteURL: 'https://github.com/kararty/ppsl-data.git',
   repoLocalPath: path.join(__dirname, 'ppsl-data'),
-  packageJSON: JSON.parse(fs.readFileSync(path.join(__dirname, './package.json'), 'utf-8'))
+  packageJSON: JSON.parse(fs.readFileSync(path.join(__dirname, './package.json'), 'utf-8')),
+  appHomepage: 'https://repair-manual.github.io/ppsl-app'
 }
 
 const settings = {
   mwEndpoint: core.getInput('mediawiki-api-endpoint') || defaultSettings.mwEndpoint,
-  userAgent: defaultSettings.userAgent,
-  repoRemoteURL: defaultSettings.repoRemoteURL,
   repoLocalPath: core.getInput('repo-local-path') || defaultSettings.repoLocalPath,
-  packageJSON: defaultSettings.packageJSON,
   githubContext: github.context
 }
 
-module.exports = settings
+module.exports = { ...defaultSettings, ...settings }

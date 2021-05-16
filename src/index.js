@@ -10,6 +10,7 @@ const settings = require('../settings.js')
 const updateRepo = require('./Git/update.js')
 const parser = require('./parser.js')
 const formatter = require('./formatter.js')
+const uploader = require('./uploader.js')
 
 config()
 
@@ -37,34 +38,31 @@ const bot = mwn.init({
 Promise.resolve(bot).then(async bot => {
   let repo
 
-  // Run this only if we're not in a github action.
-  if (!settings.githubContext.sha) {
-    // Git clone it or get it
-    try {
-      repo = await Git.Clone.clone(settings.repoRemoteURL, settings.repoLocalPath)
-    } catch (error) {
-      repo = await updateRepo(error)
-    }
-  } else if (fs.existsSync(settings.repoLocalPath)) {
-    repo = true
+  // Git clone it or get it
+  try {
+    repo = await Git.Clone.clone(settings.repoRemoteURL, settings.repoLocalPath)
+  } catch (error) {
+    repo = await updateRepo(error)
   }
 
-  if (repo) {
-    const rawData = await parser()
-
-    const formattedData = await formatter(rawData)
-
-    // TODO: Wiki-uploader goes here.
-
-    console.log('Finished.')
-
-    if (settings.githubContext.sha) {
-      core.setOutput('time', new Date())
-    }
-  } else {
+  if (typeof repo === 'boolean') {
     if (settings.githubContext.sha) {
       core.setFailed(`Could not find repository in directory: ${settings.repoLocalPath}`)
     }
-    process.exit(1)
+    return process.exit(1)
+  }
+
+  const { unusedData, rawData } = await parser()
+
+  const formattedData = await formatter(repo, rawData)
+
+  const uploadedArticles = await uploader(bot, formattedData)
+
+  console.log('Finished.', JSON.stringify(unusedData), JSON.stringify(uploadedArticles))
+
+  if (settings.githubContext.sha) {
+    core.setOutput('unused-data', JSON.stringify(unusedData))
+    core.setOutput('uploaded-articles', JSON.stringify(uploadedArticles))
+    core.setOutput('time', new Date())
   }
 })

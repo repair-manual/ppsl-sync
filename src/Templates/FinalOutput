@@ -1,2 +1,3 @@
 %generationData - %commitHash
-<onlyinclude>%problemTable</onlyinclude>
+<onlyinclude>%helpMessage
+%problemTable</onlyinclude>

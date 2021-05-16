@@ -22,6 +22,10 @@ async function retrieveLoop (arr, dir) {
 
   for (let index = 0; index < arr.length; index++) {
     const id = arr[index]
+
+    // We don't need duplicate entries.
+    if (res.findIndex(r => r._id === id) > -1) continue
+
     const fileName = getFileName(id)
 
     const fileYAML = await fs.readFile(path.join(dir, fileName), 'utf-8')
@@ -29,8 +33,7 @@ async function retrieveLoop (arr, dir) {
     const json = yaml.load(fileYAML, yaml.JSON_SCHEMA)
     json._id = id
 
-    // We don't need duplicate entries.
-    if (res.findIndex(r => r._id === json._id) === -1) res.push(json)
+    res.push(json)
   }
 
   return res
@@ -69,15 +72,22 @@ async function parser () {
   // TODO: Tags
   //
 
+  const unusedProblems = getUniques(problemsDir.map(p => p.replace('.yaml', '')), problemsFlat)
+  const unusedSolutions = getUniques(solutionsDir.map(p => p.replace('.yaml', '')), solutionsFlat)
+  const unusedLinks = getUniques(linksDir.map(p => p.replace('.yaml', '')), linksFlat)
+
   console.log(
     'Products (%s/%s)\nProblems (%s/%s) Unused: [%s]\nSolutions (%s/%s) Unused: [%s]\nLinks (%s/%s) Unused: [%s]',
     products.length, productsDir.length,
-    problems.length, problemsDir.length, getUniques(problemsDir.map(p => p.replace('.yaml', '')), problemsFlat).join(','),
-    solutions.length, solutionsDir.length, getUniques(solutionsDir.map(p => p.replace('.yaml', '')), solutionsFlat).join(','),
-    links.length, linksDir.length, getUniques(linksDir.map(p => p.replace('.yaml', '')), linksFlat).join(',')
+    problems.length, problemsDir.length, unusedProblems.join(','),
+    solutions.length, solutionsDir.length, unusedSolutions.join(','),
+    links.length, linksDir.length, unusedLinks.join(',')
   )
 
-  return { products, problems, solutions, links }
+  return {
+    unusedData: { problems: unusedProblems, solutions: unusedSolutions, links: unusedLinks },
+    rawData: { products, problems, solutions, links }
+  }
 }
 
 module.exports = parser

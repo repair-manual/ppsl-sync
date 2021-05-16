@@ -20,7 +20,7 @@ async function update (error) {
     return false
   }
 
-  return true
+  return repo
 }
 
 module.exports = update
