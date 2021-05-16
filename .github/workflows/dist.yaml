@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: '14'
 
-      - run: 'npx @vercel/ncc build src/index.js --license licenses.txt && '
+      - run: 'npx @vercel/ncc build src/index.js --license licenses.txt'
       - run: 'cp ./action.yaml ./dist/ && cp ./README.md ./dist/ && cp ./CONTRIBUTORS ./dist/ && cp ./LICENSE ./dist/'
 
       - name: 'Push it to dist branch'
