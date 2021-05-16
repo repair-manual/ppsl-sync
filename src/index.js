@@ -54,11 +54,16 @@ Promise.resolve(bot).then(async bot => {
 
   const { unusedData, rawData } = await parser()
 
-  const formattedData = await formatter(repo, rawData)
+  // Get hash commit
+  const sha = (await repo.getHeadCommit()).sha()
 
-  const uploadedArticles = await uploader(bot, formattedData)
+  const formattedData = await formatter(sha, rawData)
 
-  console.log('Finished.', JSON.stringify(unusedData), JSON.stringify(uploadedArticles))
+  const uploadedArticles = [] // await uploader(bot, formattedData)
+
+  console.log('Uploaded [%s]', uploadedArticles.join(', '))
+
+  console.log('Finished.')
 
   if (settings.githubContext.sha) {
     core.setOutput('unused-data', JSON.stringify(unusedData))

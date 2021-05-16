@@ -14,6 +14,7 @@ async function update (error) {
 
   try {
     await repo.fetchAll('origin')
+    await repo.checkoutBranch('main')
     await repo.mergeBranches('main', 'origin/main')
   } catch (error) {
     console.log(error)
