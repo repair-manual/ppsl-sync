@@ -1,17 +1,16 @@
-const simpleGit = require('simple-git')
+const simpleGit = require('simple-git').default
 
 const settings = require('../../settings')
 
 /**
  *
- * @param {simpleGit.default} git
- * @returns
+ * @param {simpleGit} git
  */
 async function update (git, error) {
   // We only want this function to continue if the error isn't ENOENT.
   if (!error.message.includes('already exists and is not an empty directory.')) {
     console.warn(error)
-    return
+    return false
   }
 
   // Get local copy
@@ -23,7 +22,7 @@ async function update (git, error) {
     await repo.checkout()
     await repo.reset(['--hard', 'origin/main'])
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return false
   }
 

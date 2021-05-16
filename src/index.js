@@ -57,7 +57,7 @@ Promise.resolve(bot).then(async bot => {
     const { unusedData, rawData } = await parser()
 
     // Get hash commit
-    const sha = (await repo.getHeadCommit()).sha()
+    const sha = await repo.revparse(['HEAD'])
 
     const formattedData = await formatter(sha, rawData)
 
