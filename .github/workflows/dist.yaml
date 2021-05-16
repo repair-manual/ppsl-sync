@@ -1,5 +1,8 @@
 name: Build PPSL-Sync
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   dist:
     runs-on: ubuntu-18.04
