@@ -1,9 +1,9 @@
-import fs from 'fs/promises'
-import path from 'path'
+const fs = require('fs/promises')
+const path = require('path')
 
-import yaml from 'js-yaml'
+const yaml = require('js-yaml')
 
-import settings from '../settings.js'
+const settings = require('../settings.js')
 
 function getFileName (str = '') {
   return str + '.yaml'
@@ -80,4 +80,4 @@ async function parser () {
   return { products, problems, solutions, links }
 }
 
-export default parser
+module.exports = parser

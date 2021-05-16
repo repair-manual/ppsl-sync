@@ -1,6 +1,6 @@
-import Git from 'nodegit'
+const Git = require('nodegit')
 
-import settings from '../../settings.js'
+const settings = require('../../settings')
 
 async function update (error) {
   // We only want this function to continue if the error is ENOENT.
@@ -23,4 +23,4 @@ async function update (error) {
   return true
 }
 
-export default update
+module.exports = update

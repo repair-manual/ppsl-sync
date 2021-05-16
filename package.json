@@ -3,7 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "main": "src/index.mjs",
-  "type": "module",
   "repository": "https://github.com/repair-manual/ppsl-sync.git",
   "license": "AGPL-3.0",
   "dependencies": {

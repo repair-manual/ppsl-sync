@@ -1,15 +1,15 @@
-import fs from 'fs'
+const fs = require('fs')
 
-import { config } from 'dotenv'
-import { mwn } from 'mwn'
-import Git from 'nodegit'
-import core from '@actions/core'
+const { config } = require('dotenv')
+const { mwn } = require('mwn')
+const Git = require('nodegit')
+const core = require('@actions/core')
 
-import settings from '../settings.js'
+const settings = require('../settings.js')
 
-import updateRepo from './Git/update.mjs'
-import parser from './parser.mjs'
-import formatter from './formatter.mjs'
+const updateRepo = require('./Git/update.js')
+const parser = require('./parser.js')
+const formatter = require('./formatter.js')
 
 config()
 
@@ -62,6 +62,9 @@ Promise.resolve(bot).then(async bot => {
       core.setOutput('time', new Date())
     }
   } else {
+    if (settings.githubContext.sha) {
+      core.setFailed(`Could not find repository in directory: ${settings.repoLocalPath}`)
+    }
     process.exit(1)
   }
 })

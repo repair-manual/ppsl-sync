@@ -1,4 +1,4 @@
-import templates from './templates.mjs'
+const templates = require('./templates.js')
 
 function noWikiLabels (str = '') {
   return str.replace(/(:|;|\*)/g, '<nowiki>$1</nowiki>')
@@ -73,4 +73,4 @@ async function formatter ({ products, problems, solutions, links }) {
   return formattedTemplates
 }
 
-export default formatter
+module.exports = formatter
