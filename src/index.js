@@ -1,8 +1,6 @@
-const fs = require('fs')
-
 const { config } = require('dotenv')
 const { mwn } = require('mwn')
-const Git = require('nodegit')
+const simpleGit = require('simple-git').default
 const core = require('@actions/core')
 
 const settings = require('../settings.js')
@@ -13,6 +11,8 @@ const formatter = require('./formatter.js')
 const uploader = require('./uploader.js')
 
 config()
+
+const git = simpleGit
 
 const bot = mwn.init({
   apiUrl: settings.mwEndpoint,
@@ -40,12 +40,10 @@ Promise.resolve(bot).then(async bot => {
 
   // Git clone it or get it
   try {
-    repo = await Git.Clone.clone(settings.repoRemoteURL, settings.repoLocalPath)
+    repo = await git().clone(settings.repoRemoteURL, settings.repoLocalPath)
   } catch (error) {
-    repo = await updateRepo(error)
+    repo = await updateRepo(git, error)
   }
-
-  console.log(repo)
 
   if (typeof repo === 'boolean') {
     if (settings.githubContext.sha) {
