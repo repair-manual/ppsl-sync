@@ -61,7 +61,7 @@ Promise.resolve(bot).then(async bot => {
 
     const formattedData = await formatter(sha, rawData)
 
-    const uploadedArticles = [] // await uploader(bot, formattedData)
+    const uploadedArticles = await uploader(bot, formattedData)
 
     console.log('Uploaded [%s]', uploadedArticles.join(', '))
 
