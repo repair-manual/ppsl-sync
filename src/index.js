@@ -79,4 +79,11 @@ Promise.resolve(bot).then(async bot => {
 
     return process.exit(1)
   }
+}).catch(error => {
+  if (settings.githubContext.sha) {
+    core.setFailed(error)
+  }
+
+  console.error(error)
+  return process.exit(1)
 })
