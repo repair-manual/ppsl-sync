@@ -45,29 +45,40 @@ Promise.resolve(bot).then(async bot => {
     repo = await updateRepo(error)
   }
 
+  console.log(repo)
+
   if (typeof repo === 'boolean') {
     if (settings.githubContext.sha) {
       core.setFailed(`Could not find repository in directory: ${settings.repoLocalPath}`)
     }
+
     return process.exit(1)
   }
 
-  const { unusedData, rawData } = await parser()
+  try {
+    const { unusedData, rawData } = await parser()
 
-  // Get hash commit
-  const sha = (await repo.getHeadCommit()).sha()
+    // Get hash commit
+    const sha = (await repo.getHeadCommit()).sha()
 
-  const formattedData = await formatter(sha, rawData)
+    const formattedData = await formatter(sha, rawData)
 
-  const uploadedArticles = [] // await uploader(bot, formattedData)
+    const uploadedArticles = [] // await uploader(bot, formattedData)
 
-  console.log('Uploaded [%s]', uploadedArticles.join(', '))
+    console.log('Uploaded [%s]', uploadedArticles.join(', '))
 
-  console.log('Finished.')
+    console.log('Finished.')
 
-  if (settings.githubContext.sha) {
-    core.setOutput('unused-data', JSON.stringify(unusedData))
-    core.setOutput('uploaded-articles', JSON.stringify(uploadedArticles))
-    core.setOutput('time', new Date())
+    if (settings.githubContext.sha) {
+      core.setOutput('unused-data', JSON.stringify(unusedData))
+      core.setOutput('uploaded-articles', JSON.stringify(uploadedArticles))
+      core.setOutput('time', new Date())
+    }
+  } catch (error) {
+    if (settings.githubContext.sha) {
+      core.setFailed(error)
+    }
+
+    return process.exit(1)
   }
 })
