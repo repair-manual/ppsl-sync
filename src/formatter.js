@@ -54,8 +54,8 @@ async function formatter (sha, { products, problems, solutions, links }) {
       const problemDescriptionFormat = trimDescription(problem.description).length > 0 ? trimDescription(problem.description) : undefined
       const problemTE = templates.problemTableEntry
         .replace(/%n/g, ii + 1)
-        .replace('%problem', `;${problemLabelFormat}${problemDescriptionFormat ? `\n:${problemDescriptionFormat}` : ''}`)
         .replace('%solutions', solutionsFormatted.join('\n'))
+        .replace('%problem', `;${problemLabelFormat}${problemDescriptionFormat ? `\n:${problemDescriptionFormat}` : ''}`)
 
       problemsFormatted.push(problemTE)
     }
